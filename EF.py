@@ -19,7 +19,9 @@ c = deterministic_params['c']  # unit procurement cost
 v_i = deterministic_params['v_i']  # stock-out cost
 w_i = deterministic_params['w_i']  # time-waste cost
 t_ij = deterministic_params['t_ij']  # unit transshipment cost
-capacity_i = json_load(capacity_i_dir)
+
+'''Keep in mind that this capacity switcher'''
+capacity_i = json_load(capacity_i_constant_dir)
 
 scenario_num_set = [100,300,500,700,900,1000]
 distributions = ['log-normal', 'normal', 'uniform', 'exponential']
@@ -98,7 +100,7 @@ for scenario_num in scenario_num_set:
         m.params.logtoconsole=0
         start=datetime.now()
         m.optimize()
-        duration = datetime.now()-start
+        duration = (datetime.now()-start).total_seconds()
         optimal_sol['duration'] = duration
         print('duration:', duration)
         ## Get solution into table
@@ -108,4 +110,4 @@ for scenario_num in scenario_num_set:
 
         optimal_table = optimal_table.append(optimal_sol, ignore_index=True)
 
-    optimal_table.to_csv('results/results_EF.csv', index=False)
+    optimal_table.to_csv('results/results_EF_fixedCap.csv', index=False)
